@@ -1,0 +1,27 @@
+.top-row {
+    background: darkgrey;
+}
+
+.row-entry {
+    background: gainsboro;
+}
+
+table td img {
+    width: 120px;
+    height: 120px;
+}
+
+table {
+    border: 1px solid black;
+    margin-top: 10px;
+
+}
+
+td {
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.add-data{
+    width: 250px;
+}
