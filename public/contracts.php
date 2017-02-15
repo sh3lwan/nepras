@@ -20,14 +20,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script> <!-- load angular -->
     <script src="js/controllers/mainCtrl.js"></script>
     <script src="js/services/employeeService.js"></script>
-    <script src="js/app.js"></script>
 
 
 </head>
 <body ng-app="mainApp">
 <div class="container">
 
-    <div class="add-data" ng-controller="Ctrl">
+    <div class="add-data" ng-controller="mainController">
 
         <h1>Add Data</h1>
 
