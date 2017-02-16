@@ -5,7 +5,6 @@
 app.controller('mainController', function ($scope, $window, $timeout, $filter, $http) {
 
 
-    // Start Contracts
     $http.get('/api/contracts').then(
         function (response) {
             $scope.contracts = response.data;
@@ -15,19 +14,12 @@ app.controller('mainController', function ($scope, $window, $timeout, $filter, $
         });
 
 
-    // End Contracts
-
-
-    //Start Employees
     $scope.object = {
         name: '', address: '', identity: '',
         birth_date: '', image: '', contract_id: 1
 
     };
 
-
-    // $scope.validDate = true;
-    // $scope.disableButton = false;
 
     $scope.checkDate = function () {
         var date = $filter('date')(new Date($scope.object.birth_date), 'yyyy');
@@ -39,7 +31,6 @@ app.controller('mainController', function ($scope, $window, $timeout, $filter, $
 
     $http.get('api/employees').then(
         function (response) {
-            console.log('Here');
             $scope.employees = response.data;
         }, function (response) {
             $scope.error = "Something went wrong";
@@ -109,24 +100,6 @@ app.controller('mainController', function ($scope, $window, $timeout, $filter, $
         });
 
     };
-
-    //
-    // var employeeID = -1;
-    //
-    //
-    // $scope.fileRequired = true;
-    // $scope.showUpdate = function (employee) {
-    //     $scope.updateShown = true;
-    //     $scope.fileRequired = false;
-    //     employeeID = employee.id;
-    //     $scope.object = employee;
-    //     $scope.object.birth_date = new Date(employee.birth_date);
-    //     // $scope.contractSelected = $scope.employee.contract_id;
-    //     $window.scrollTo(0, 0);
-    //     $scope.unChanged = $scope.object;
-    //
-    //
-    // };
 
 });
 

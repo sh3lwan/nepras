@@ -89,11 +89,6 @@
                 </button>
             </div>
 
-            <div class="action">
-                <button ng-disabled="disableButton" ng-click="updateEmployee()" class="btn btn-default"
-                        ng-show="updateShown">Update
-                </button>
-            </div>
         </form>
 
 
@@ -111,13 +106,12 @@
                 <td>Birth Date</td>
                 <td>Contract Type</td>
                 <td>Delete</td>
-                <td>Update</td>
                 <td>Family</td>
             </tr>
 
 
             <tr ng-repeat="employee in employees" class="row-entry">
-                <td><img ng-src="avatars/{{employee.image}}"></td>
+                <td><img ng-src="/avatars/{{employee.image}}"></td>
                 <td>{{employee.identity}}</td>
                 <td>{{employee.name}}</td>
                 <td>{{employee.address}}</td>
@@ -125,12 +119,6 @@
                 <td>{{employee.contract_id}}</td>
                 <td>
                     <button href="index.php" ng-click="deleteEmployee(employee)" class="btn btn-danger">Delete</button>
-                </td>
-
-                <td>
-                    <a href="#" ng-click="showUpdate(employee)" class="btn btn-info">
-                        Update
-                    </a>
                 </td>
                 <td>
                     <a href="/family.php?relative_id={{employee.id}}" class="btn btn-info">

@@ -45,13 +45,16 @@
                        ng-model="familyMember.birth_date" required>
             </div>
 
-            <select ng-model="familyMember.relation">
-                <option value="Wife">Wife</option>
-                <option value="Husband">Husband</option>
-                <option value="Son">Son</option>
-                <option value="Daughter">Daughter</option>
-                <option value="Other">Other</option>
-            </select>
+            <div class="form-group">
+                <select ng-model="familyMember.relation">
+                    <option value="Wife">Wife</option>
+                    <option value="Husband">Husband</option>
+                    <option value="Son">Son</option>
+                    <option value="Daughter">Daughter</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
 
             <div class="action">
                 <button ng-disable="disableButton" type="submit" class="btn btn-default">Add</button>
@@ -70,7 +73,6 @@
                 <td>Relationship</td>
                 <td>Birth Date</td>
                 <td>Delete</td>
-                <td>Update</td>
             </tr>
             <tr ng-repeat="member in family">
                 <td>{{member.relative_id}}</td>
@@ -80,11 +82,6 @@
 
                 <td>
                     <button href="#" ng-click="deleteMember(member)" class="btn btn-danger">Delete</button>
-                </td>
-
-                <td>
-                    <button href="#" class="btn btn-info">Update
-                    </button>
                 </td>
             </tr>
         </table>
