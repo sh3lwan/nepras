@@ -22,6 +22,33 @@ td {
     border: 1px solid black;
 }
 
-.add-data{
-    width: 250px;
+.add-data {
+    margin-top: 50px;
+    width: 500px;
+    margin-bottom: 50px;
+    padding: 10px;
+}
+
+.error {
+    margin-top: 50px;
+    background-color: rgba(255, 0, 0, 0.2);
+    color: black;
+    border: 1px solid white;
+    padding: 10px;
+}
+
+.success {
+    background-color: rgba(0, 255, 0, 0.2);
+    color: indianred;
+    border: 1px solid black;
+    padding: 10px
+}
+
+.add-contract{
+    margin-top: 50px;
+    width: 500px;
+}
+
+.contract-table{
+    width: 100%;
 }

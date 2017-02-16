@@ -1,12 +1,12 @@
-<?php
-
-namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 use App\Contract;
 use App\Employee;
+use App\FamilyMember;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+use \Illuminate\Support\Facades\Validator;
 
 
 class EmployeeController extends Controller
@@ -24,18 +24,21 @@ class EmployeeController extends Controller
         return Response::json($employees);
     }
 
-    public function show($identity)
-    {
-        if (User::where('identity', '=', $identity)->exists()) {
-            return false;
-        }
-        return true;
-    }
-
     public function store(Request $request)
     {
+        $rules = ['identity' => 'unique:employees'];
+        $messages = [
+            'unique' => 'The :attribute already exists.',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-        $response = array('success' => false);
+
+        if ($validator->fails()) {
+            return Response::json(array(
+                'success' => false,
+                'message' => $validator->messages(),
+            ));
+        }
 
         $destinationPath = "avatars/";
         $image = $request->file('image');
@@ -57,6 +60,7 @@ class EmployeeController extends Controller
                 $newEmployee->save();
                 $response['success'] = true;
                 $response['employee'] = $newEmployee;
+
             }
 
         }
@@ -69,12 +73,15 @@ class EmployeeController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $employee = Employee::find($id);
+        return $request->input();
+
     }
 
 
     public function destroy($id)
     {
+
         Employee::destroy($id);
         return Response::json(array('success' => true));
     }

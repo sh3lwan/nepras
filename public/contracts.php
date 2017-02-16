@@ -16,99 +16,55 @@
     <link href="css/style.css" rel="stylesheet">
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script> <!-- load angular -->
-    <script src="js/controllers/mainCtrl.js"></script>
-    <script src="js/services/employeeService.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/contractsCtrl.js"></script>
 
 
 </head>
-<body ng-app="mainApp">
+<body ng-app="mainApp" ng-controller="contractController">
 <div class="container">
+    <div class="add-contract">
 
-    <div class="add-data" ng-controller="mainController">
-
-        <h1>Add Data</h1>
-
-        <form method="POST" name="add-form" ng-submit="addEmployee()">
-
-            <?php echo csrf_field(); ?>
+        <h3>ADD CONCTRACT</h3>
+        <form method="post" ng-submit="addContract()">
+            <input hidden="true" value="{{csrf_token()}}">
 
 
-            <div class="form-group form-inline">
-                <input id="identity" class="form-control input-sm" placeholder="SSN" pattern="[0-9]{10}" required
-                       title="Only 10 numbers allowed"
-                       ng-model="object.identity" ng-blur="validateID()">
-                <span ng-show="validIdentity">ID number not available!</span>
-            </div>
             <div class="form-group">
-                <input type="text" class="form-control " placeholder="Full Name"
-                       ng-model="object.name" required pattern="\D{1,}" tilte="Only letters allowed">
-            </div>
-            <div class="form-group">
-                <input type="date" class="form-control "
-                       placeholder="Birth Date"
-                       ng-model="object.birth_date" required>
+                <input type="text" class="form-control " placeholder="Name"
+                       ng-model="newContract.name" required pattern="\D{1,}" tilte="Only letters allowed">
             </div>
 
             <div class="form-group">
-                <input type="text" class="form-control " placeholder="Address"
-                       ng-model="object.address" required>
+                <input type="text" class="form-control " placeholder="Description"
+                       ng-model="newContract.description" required>
             </div>
 
-            <!--            <div class="form-group">-->
-            <!--                Image:-->
-            <!--                <input type="file" class="form-control " value="load" required-->
-            <!--                       accept="image/*">-->
-            <!--            </div>-->
+            <input type="submit" class="btn btn-info">
 
-            <div class="form-group">
-                Contract Type:
-                <select ng-options="contract as contract.name for contract in contracts"
-                        ng-model="contractSelected"></select>
-            </div>
-
-            <div class="action">
-                <button type="submit" class="btn btn-default">Add</button>
-            </div>
         </form>
 
-
     </div>
 
+    <table class="contract-table text-center">
+        <tr class="top-row">
+            <td>ID</td>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Delete</td>
+        </tr>
 
-    <div class="text-center" ng-controller="mainController">
-        <table>
-            <tr class="top-row">
-                <td>#ID</td>
-                <td>SSN</td>
-                <td>Name</td>
-                <td>Address</td>
-                <td>Birth Date</td>
-                <td>Contract Type</td>
-                <td>Delete</td>
-                <td>Update</td>
-            </tr>
-            <tr ng-repeat="employee in employees">
-                <td>{{employee.id}}</td>
-                <td>{{employee.identity}}</td>
-                <td>{{employee.name}}</td>
-                <td>{{employee.address}}</td>
-                <td>{{employee.birth_date | date:'dd/MM/yyyy'}}</td>
-                <td>{{employee.contract_id}}</td>
-                <td>
-                    <button href="#" ng-click="deleteEmployee(employee)" class="btn btn-danger">Delete</button>
-                </td>
-
-                <td>
-                    <button href="#" class="btn btn-info">Update
-                    </button>
-                </td>
-            </tr>
-        </table>
-    </div>
+        <tr ng-repeat="contract in contracts">
+            <td>{{contract.id}}</td>
+            <td>{{contract.name}}</td>
+            <td>{{contract.description | limitTo:200}}</td>
+            <td>
+                <button href="#" ng-click="deleteContract(contract)" class="btn btn-danger">Delete</button>
+            </td>
+        </tr>
+    </table>
 </div>
-
-
 </body>
 </html>

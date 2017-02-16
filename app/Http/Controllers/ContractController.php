@@ -21,14 +21,10 @@ class ContractController extends Controller
     }
 
 
-    public function create()
-    {
-
-    }
-
     public function store(Request $request)
     {
-        return 'Hello';
+        $contract = Contract::create($request->input());
+        return Response::json(array('success' => true, 'Contract' => $contract));
     }
 
     public function show($id)
@@ -36,18 +32,11 @@ class ContractController extends Controller
         return Contact::find($id);
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     public function destroy($id)
     {
-        //
+        Contract::destroy($id);
+
+        Response::json(array('success' => true));
     }
 }
