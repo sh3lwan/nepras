@@ -110,23 +110,23 @@ app.controller('mainController', function ($scope, $window, $timeout, $filter, $
 
     };
 
-
-    var employeeID = -1;
-
-
-    $scope.fileRequired = true;
-    $scope.showUpdate = function (employee) {
-        $scope.updateShown = true;
-        $scope.fileRequired = false;
-        employeeID = employee.id;
-        $scope.object = employee;
-        $scope.object.birth_date = new Date(employee.birth_date);
-        // $scope.contractSelected = $scope.employee.contract_id;
-        $window.scrollTo(0, 0);
-        $scope.unChanged = $scope.object;
-
-
-    };
+    //
+    // var employeeID = -1;
+    //
+    //
+    // $scope.fileRequired = true;
+    // $scope.showUpdate = function (employee) {
+    //     $scope.updateShown = true;
+    //     $scope.fileRequired = false;
+    //     employeeID = employee.id;
+    //     $scope.object = employee;
+    //     $scope.object.birth_date = new Date(employee.birth_date);
+    //     // $scope.contractSelected = $scope.employee.contract_id;
+    //     $window.scrollTo(0, 0);
+    //     $scope.unChanged = $scope.object;
+    //
+    //
+    // };
 
 });
 
