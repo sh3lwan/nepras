@@ -17,7 +17,7 @@ class CreateFamilyTable extends Migration
             $table->string('name');
             $table->date('birth_date');
             $table->string('relation');
-            $table->integer('relative_id')->unsigned()->nullable()->references('id')->on('employees')->onDelete('cascade');
+            $table->integer('relative_id')->unsigned()->nullable()->references('id')->on('employees')->onDelete('set null');
             $table->softDeletes();
             $table->timestamps();
 

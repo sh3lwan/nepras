@@ -19,7 +19,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('identity')->unsigned();
             $table->string('image');
             $table->string('address');
-            $table->integer('contract_id')->unsigned()->nullable()->references('id')->on('contracts')->onDelete('cascade');
+            $table->integer('contract_id')->unsigned()->nullable()->references('id')->on('contracts')->onDelete('set null');
             $table->softDeletes();
             $table->timestamps();
         });
