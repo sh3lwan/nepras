@@ -16,10 +16,10 @@
     <link href="css/style.css" rel="stylesheet">
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script> <!-- load angular -->
-
+    <script src="js/lib/angular.min.js"></script> <!-- load angular -->
+    <script src="js/lib/angular-resource.min.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/services/family.service.js"></script>
     <script src="js/controllers/familyCtrl.js"></script>
 
 

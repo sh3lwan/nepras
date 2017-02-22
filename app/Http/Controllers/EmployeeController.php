@@ -16,20 +16,27 @@ class EmployeeController extends Controller
     {
         $employees = Employee::all();
         foreach ($employees as $employee) {
-            $contractID = $employee->contract_id;
-            $contractName = Contract::find($contractID)->name;
+            $contractName = Contract::find($employee->contract_id)->name;
             $employee->contract_id = $contractName;
+        };
 
-        }
         return Response::json($employees);
     }
+
+
+    public function show($id)
+    {
+        $employee = Employee::find($id);
+        $family = $employee->family()->orderBy('name');
+        return Response::json($family);
+    }
+
 
     public function store(Request $request)
     {
         $rules = ['identity' => 'unique:employees'];
         $messages = [
-            'unique' => 'The :attribute already exists.',
-        ];
+            'unique' => 'The :attribute already exists.',];
         $validator = Validator::make($request->all(), $rules, $messages);
 
 
@@ -40,46 +47,17 @@ class EmployeeController extends Controller
             ));
         }
 
-        $destinationPath = "avatars/";
-        $image = $request->file('image');
 
-        if ($image->isValid()) {
-
-
-            $ext = $image->getClientOriginalExtension();
-            $fileName = time() . uniqid() . '.' . $ext;
-
-
-            $uploadSuccess = $image->move($destinationPath, $fileName);
-
-
-            if ($uploadSuccess) {
-                $employee = $request->all();
-                $newEmployee = Employee::create($employee);
-                $newEmployee->image = $fileName;
-                $newEmployee->save();
-                $response['success'] = true;
-                $response['employee'] = $newEmployee;
-
-            }
-
-        }
-
-
-        return Response::json($response);
+        $employee = Employee::create($request->all());
+        $employee->image = $request->image;
+        $employee->save();
+        return Response::json(array('success' => true, 'employee' => $employee));
 
     }
 
 
-    public function update(Request $request, $id)
-    {
-        $employee = Employee::find($id);
-        return $request->input();
-
-    }
-
-
-    public function destroy($id)
+    public
+    function destroy($id)
     {
 
         Employee::destroy($id);

@@ -1,4 +1,4 @@
-app.controller('familyController', function ($http, $filter, $location, $scope) {
+app.controller('familyController', function ($http, Family, $filter, $location, $scope) {
     var id = location.search;
     id = id.split('=')[1];
 
@@ -13,25 +13,12 @@ app.controller('familyController', function ($http, $filter, $location, $scope) 
         $scope.familyMember = {'relation': 'Son'};
     }
 
-
-    $http.get(generalUrl).then(
-        function (response) {
-            $scope.family = response.data;
-        }, function (error) {
-
-        });
-
+    $scope.family = Family.query();
+    var index = $scope.family.indexOf(member);
+    $scope.family.splice(index, 1);
 
     $scope.deleteMember = function (member) {
-        $http.delete('api/family/' + member.id).then(function (response) {
-                if (response.data.success) {
-                    var index = $scope.family.indexOf(member);
-                    $scope.family.splice(index, 1);
-                }
-            }, function (response) {
 
-            }
-        );
     };
 
 

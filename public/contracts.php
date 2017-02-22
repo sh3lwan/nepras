@@ -15,12 +15,12 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
-
-    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script> <!-- load angular -->
+    <script src="js/lib/angular.min.js"></script>
+    <script src="js/lib/angular-resource.min.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/services/popup.service.js"></script>
+    <script src="js/services/contract.service.js"></script>
     <script src="js/controllers/contractsCtrl.js"></script>
-
 
 </head>
 <body ng-app="mainApp" ng-controller="contractController">

@@ -11,4 +11,13 @@ class Employee extends Model
 
     protected $dates = ['deleted_at'];
     protected $fillable = ['name', 'contract_id', 'address', 'birth_date', 'identity'];
+
+    public function family()
+    {
+
+        return $this->hasMany('App\FamilyMember', 'employee_id', 'id');
+
+    }
+
+
 }

@@ -24,7 +24,7 @@ class ContractController extends Controller
     public function store(Request $request)
     {
         $contract = Contract::create($request->input());
-        return Response::json(array('success' => true, 'Contract' => $contract));
+        return Response::json(array('success' => true, 'contract' => $contract));
     }
 
     public function show($id)

@@ -22,4 +22,4 @@ Route::group(array('prefix' => 'api'), function () {
 
 });
 
-//Route::get('family', 'FamilyController');
+Route::post('upload', 'uploadController@upload');

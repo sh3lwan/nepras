@@ -15,13 +15,15 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
-    <script src="js/lib/jquery.min.js"></script>
     <script src="js/lib/angular.min.js"></script>
+    <script src="js/lib/angular-resource.min.js"></script>
+
 
     <script src="js/app.js"></script>
-    <script src="js/services/saveData.js"></script>
     <script src="js/controllers/mainCtrl.js"></script>
-
+    <script src="js/services/employee.service.js"></script>
+    <script src="js/services/contract.service.js"></script>
+    <script src="js/services/popup.service.js"></script>
 
 </head>
 <body ng-app="mainApp" ng-controller="mainController">
