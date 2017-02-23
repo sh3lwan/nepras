@@ -41,14 +41,21 @@ class FamilyController extends Controller
         return Response::json(array('success' => false));
     }
 
-    public function edit($id)
-    {
-        //
-    }
 
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->input('data');
+        $member = FamilyMember::find($id)->update($data);
+
+//
+//        if ($member) {
+//            return Response::json(array('success' => true,
+//                'message' => 'Family member updated Successfully',
+//            ));
+//        }
+//
+//        return Response::json(array('success' => false, 'message' => 'Update failed'));
+
     }
 
     public function destroy($id)

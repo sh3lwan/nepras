@@ -4,7 +4,9 @@
 
 app.factory('Family', function ($resource) {
     return $resource('api/family/:id', {id: '@id'}, {
-        delete: {method: 'DELETE'}
-
+        delete: {method: 'DELETE'},
+        update: {
+            method: 'PUT' // this method issues a PUT request
+        }
     });
 });

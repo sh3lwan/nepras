@@ -72,13 +72,14 @@
                        ng-model="object.address" required>
             </div>
 
-            <div class="form-group" ng-hide="fileShown">
+            <div class="form-group" ng-show="fileShown">
                 Image:
-                <input type="file" class="btn  btn-block" name="uploaded-image" id="uploaded-image"
-                       ng-required="fileRequired"
+                <input ng-required="fileRequired" type="file" class="btn  btn-block" name="uploaded-image"
+                       id="uploaded-image"
                        value="Change Image" accept=" image/*">
 
             </div>
+
 
             <div class="form-group">
                 Contract Type:
@@ -87,7 +88,8 @@
             </div>
 
             <div class="action">
-                <button ng-disabled="disableButton" type="submit" class="btn btn-default" ng-hide="updateShown">Add
+                <button ng-disabled="disableButton" type="submit" class="btn btn-default">
+                    {{buttonValue}}
                 </button>
             </div>
 
@@ -108,9 +110,9 @@
                 <td>Birth Date</td>
                 <td>Contract Type</td>
                 <td>Delete</td>
+                <td>Update</td>
                 <td>Family</td>
             </tr>
-
 
             <tr ng-repeat="employee in employees" class="row-entry">
                 <td><img ng-src="/avatars/{{employee.image}}"></td>
@@ -120,16 +122,26 @@
                 <td>{{employee.birth_date | date:'dd/MM/yyyy'}}</td>
                 <td>{{employee.contract_id}}</td>
                 <td>
-                    <button href="index.php" ng-click="deleteEmployee(employee)" class="btn btn-danger">Delete</button>
+                    <button href="#" ng-click="deleteEmployee(employee)" class="btn btn-danger">Delete
+                    </button>
                 </td>
+                <td>
+                    <a href="#" class="btn btn-info" ng-click="updateEmployee(employee)">
+                        Update
+                    </a>
+                </td>
+
                 <td>
                     <a href="/family.php?relative_id={{employee.id}}" class="btn btn-info">
                         Family
                     </a>
                 </td>
+
             </tr>
 
+
         </table>
+
     </div>
 
 

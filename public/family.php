@@ -36,6 +36,9 @@
 
             <input hidden="true" value="{{csrf_token()}}">
 
+            <span class="error" ng-show="errorShown">
+                {{error}}
+            </span>
 
             <div class="form-group">
                 <input type="text" class="form-control " placeholder="Full Name"
@@ -58,7 +61,7 @@
 
 
             <div class="action">
-                <button ng-disable="disableButton" type="submit" class="btn btn-default">Add</button>
+                <button ng-disable="disableButton" type="submit" class="btn btn-default">{{buttonValue}}</button>
             </div>
         </form>
 
@@ -74,6 +77,7 @@
                 <td>Relationship</td>
                 <td>Birth Date</td>
                 <td>Delete</td>
+                <td>Update</td>
             </tr>
             <tr ng-repeat="member in family">
                 <td>{{member.relative_id}}</td>
@@ -83,6 +87,9 @@
 
                 <td>
                     <button href="#" ng-click="deleteMember(member)" class="btn btn-danger">Delete</button>
+                </td>
+                <td>
+                    <button href="#" ng-click="updateMember(member)" class="btn btn-info">Update</button>
                 </td>
             </tr>
         </table>

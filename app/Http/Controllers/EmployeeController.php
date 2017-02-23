@@ -53,6 +53,34 @@ class EmployeeController extends Controller
 
     }
 
+    public function update(Request $request)
+    {
+
+        $ssn = $request->input('identity');
+        $id = $request->input('id');
+
+        $exist = Employee::where('identity', $ssn)->get();
+        if ($exist) {
+            foreach ($exist as $emp) {
+                if ($emp->id != $id) {
+                    return Response::json(array('success' => false, 'message' => 'Employee update Failed'));
+                }
+            }
+        }
+
+        $employee = Employee::find($id)
+            ->update($request->all());
+
+        if ($employee) {
+            return Response::json(array('success' => true,
+                'message' => 'Employee updated Successfully',
+            ));
+        }
+
+        return Response::json(array('success' => false, 'message' => 'Employee update failed'));
+
+
+    }
 
     public function destroy($id)
     {

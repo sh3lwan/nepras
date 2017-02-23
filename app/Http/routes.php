@@ -17,8 +17,8 @@ Route::get('/', function () {
 
 Route::group(array('prefix' => 'api'), function () {
     Route::resource('employees', 'EmployeeController');
-    Route::resource('contracts','ContractController');
-    Route::resource('family','FamilyController');
+    Route::resource('contracts', 'ContractController');
+    Route::resource('family', 'FamilyController');
 
 });
 
