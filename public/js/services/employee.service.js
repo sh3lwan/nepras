@@ -8,7 +8,7 @@ app.factory('Employee', function ($resource) {
         update: {
             method: 'PUT'
         },
-        delete:{
+        delete: {
             method: 'DELETE'
         }
     });

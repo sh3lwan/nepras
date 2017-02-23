@@ -27,12 +27,6 @@ class ContractController extends Controller
         return Response::json(array('success' => true, 'contract' => $contract));
     }
 
-    public function show($id)
-    {
-        return Contact::find($id);
-    }
-
-
     public function destroy($id)
     {
         Contract::destroy($id);

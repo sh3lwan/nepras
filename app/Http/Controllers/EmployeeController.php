@@ -15,20 +15,18 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
+        $toView = array();
         foreach ($employees as $employee) {
-            $contractName = Contract::find($employee->contract_id)->name;
-            $employee->contract_id = $contractName;
+            if ($employee) {
+                $contract = Contract::find($employee->contract_id);
+                if ($contract) {
+                    $employee->contract_id = $contract->name;
+                    array_push($toView, $employee);
+                }
+            }
         };
 
-        return Response::json($employees);
-    }
-
-
-    public function show($id)
-    {
-        $employee = Employee::find($id);
-        $family = $employee->family()->orderBy('name');
-        return Response::json($family);
+        return Response::json($toView);
     }
 
 
@@ -56,8 +54,7 @@ class EmployeeController extends Controller
     }
 
 
-    public
-    function destroy($id)
+    public function destroy($id)
     {
 
         Employee::destroy($id);

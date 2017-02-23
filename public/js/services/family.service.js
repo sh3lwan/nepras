@@ -3,5 +3,8 @@
  */
 
 app.factory('Family', function ($resource) {
-    return $resource('api/family/:id', {id: '@id'});
+    return $resource('api/family/:id', {id: '@id'}, {
+        delete: {method: 'DELETE'}
+
+    });
 });

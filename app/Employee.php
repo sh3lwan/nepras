@@ -14,9 +14,7 @@ class Employee extends Model
 
     public function family()
     {
-
-        return $this->hasMany('App\FamilyMember', 'employee_id', 'id');
-
+        return $this->hasMany('App\FamilyMember', 'relative_id', 'id');
     }
 
 

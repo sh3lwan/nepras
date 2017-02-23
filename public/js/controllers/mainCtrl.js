@@ -27,7 +27,6 @@ app.controller('mainController', function ($scope, $filter, $http, $timeout, pop
             }
         };
 
-
         $scope.addEmployee = function () {
             $scope.disableButton = true;
             var fileInput = document.getElementById("uploaded-image");
@@ -52,11 +51,8 @@ app.controller('mainController', function ($scope, $filter, $http, $timeout, pop
 
                     var employee = $scope.object;
 
-                    console.log(employee);
                     Employee.save(employee, function (dataResponse) {
                         if (dataResponse.success) {
-                            console.log(employee);
-
                             $scope.errorShown = false;
                             $scope.successShown = true;
                             $scope.success = 'Employee Added Successfuly';
@@ -85,7 +81,6 @@ app.controller('mainController', function ($scope, $filter, $http, $timeout, pop
             //
             // });
         };
-
     }
 );
 

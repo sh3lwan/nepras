@@ -20,6 +20,7 @@
     <script src="js/lib/angular-resource.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/services/family.service.js"></script>
+    <script src="js/services/popup.service.js"></script>
     <script src="js/controllers/familyCtrl.js"></script>
 
 
@@ -68,7 +69,7 @@
     <div class="text-center">
         <table>
             <tr class="top-row">
-                <td>Related Employee's ID</td>
+                <td>Employee</td>
                 <td>Name</td>
                 <td>Relationship</td>
                 <td>Birth Date</td>
