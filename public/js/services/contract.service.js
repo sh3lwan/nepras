@@ -4,5 +4,8 @@
 
 
 app.factory('Contract', function ($resource) {
-    return $resource('api/contracts/:id', {id: '@id'});
+    return $resource('api/contracts/:id', {id: '@id'},
+        {
+            update: {method: 'PUT'}
+        });
 });

@@ -21,6 +21,14 @@ class ContractController extends Controller
     }
 
 
+    public function update(Request $request, $id)
+    {
+        $contract = Contract::find($id);
+        $update = $contract->update($request->input('data'));
+        return Response::json(array('success' => $update));
+
+    }
+
     public function store(Request $request)
     {
         $contract = Contract::create($request->input());

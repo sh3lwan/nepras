@@ -29,6 +29,7 @@
 
         <h3>ADD CONCTRACT</h3>
         <form method="post" ng-submit="addContract()">
+
             <input hidden="true" value="{{csrf_token()}}">
 
 
@@ -42,7 +43,7 @@
                        ng-model="newContract.description" required>
             </div>
 
-            <input type="submit" class="btn btn-info">
+            <button type="submit" class="btn btn-info">{{buttonValue}}</button>
 
         </form>
 
@@ -54,6 +55,7 @@
             <td>Name</td>
             <td>Description</td>
             <td>Delete</td>
+            <td>Update</td>
         </tr>
 
         <tr ng-repeat="contract in contracts">
@@ -62,6 +64,9 @@
             <td>{{contract.description | limitTo:200}}</td>
             <td>
                 <button href="#" ng-click="deleteContract(contract)" class="btn btn-danger">Delete</button>
+            </td>
+            <td>
+                <button href="#" ng-click="updateContract(contract)" class="btn btn-info">Update</button>
             </td>
         </tr>
     </table>

@@ -4,24 +4,37 @@
 
 app.controller('mainController', function ($scope, $window, $filter, $http, $timeout, popupService, Employee, Contract) {
 
+
+        //Get contracts from server
         $scope.contracts = Contract.query(function () {
             $scope.contractSelected = $scope.contracts[0];
         });
 
+
+        //Get employees from server
         $scope.employees = Employee.query();
 
 
+        //Validate if date is in proper range of values
         $scope.checkDate = function () {
+            //filter to form years
             var date = $filter('date')(new Date($scope.object.birth_date), 'yyyy');
+
+            //Check if between 2000 and 1970.
             var disable = date > 2000 || date < 1970;
+
+            //Disable adding button if invalid date
             $scope.invalidDate = disable;
             $scope.disableButton = disable;
         };
 
 
         $scope.deleteEmployee = function (employee) {
+            //Show pop up message to ask if user sure about delete
             if (popupService.showPopup('Are you sure?')) {
                 employee.$delete(function () {
+
+                    //Remove employee from table without render
                     var index = $scope.employees.indexOf(employee);
                     $scope.employees.splice(index, 1);
                 });
@@ -29,18 +42,31 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
         };
 
 
+        //Default values for Adding button(Add Employee, Choice 1)
         var submitValue = 0;
         showAdd();
+
+
         $scope.addEmployee = function () {
+
+            //Choice 1, Adding Employee
             if (submitValue === 1) {
+
+
                 $scope.disableButton = true;
+
+                //Get files from input:file field
                 var fileInput = document.getElementById("uploaded-image");
                 var files = fileInput.files;
                 var image = files[0];
 
+
+                //Append image to form data
                 var fd = new FormData();
                 fd.append('image', image);
 
+
+                //Send to server to upload image
                 $http.post('upload', fd, {
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
@@ -48,15 +74,21 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
                     function (response) {
 
                         var imagePath = 'image.jpg';
+
+                        //When upload succeeds, server returns file uploaded name
                         if (response.data.success) {
                             imagePath = response.data.image;
                         }
+
                         $scope.object.image = imagePath;
                         $scope.object.contract_id = $scope.contractSelected.id;
 
                         var employee = $scope.object;
 
+
+                        //Adding request to the server to add new employee
                         Employee.save(employee, function (dataResponse) {
+
                             if (dataResponse.success) {
                                 $scope.errorShown = false;
                                 $scope.successShown = true;
@@ -64,21 +96,20 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
                                 employee['contract_id'] = $scope.contractSelected.name;
                                 $scope.employees.splice(0, 0, employee);
                             } else {
-                                // console.log('Failure:');
-                                // console.log(dataResponse);
+                                //If adding failed, show error messages
                                 $scope.errorShown = true;
                                 $scope.error = dataResponse.message.identity[0];
                             }
                         });
-
-
-                    }, function () {
-
+                    }, function (error) {
+                        //
                     });
 
+
+                //Choice 2, Update Employee
             } else if (submitValue == 2) {
-                console.log('Update');
-                showAdd();
+
+
                 $scope.object.birth_date = $filter('date')(new Date($scope.object.birth_date), 'yyyy-MM-dd');
                 $scope.object.contract_id = $scope.contractSelected.id;
                 $scope.disableButton = true;
@@ -97,18 +128,23 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
 
             }
 
+
+            //After 3 seconds, return to default values
             $timeout(function () {
                 $scope.errorShown = false;
                 $scope.successShown = false;
-                $scope.disableButton = false
+                $scope.disableButton = false;
+                showAdd();
             }, 3000);
         };
 
 
+        //Change choice to update employee
         $scope.updateEmployee = function (employee) {
-
             submitValue = 2;
             $scope.fileShown = false;
+
+            //Fill data from employee chosen to input fields
             $scope.object = employee;
             $scope.object.birth_date = new Date(employee.birth_date);
             $scope.buttonValue = 'Update Employee';
@@ -118,6 +154,7 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
         };
 
 
+        // Initializes default values for ADD BUTTON
         function showAdd() {
             submitValue = 1;
             $scope.buttonValue = 'Add Employee';
