@@ -14,19 +14,16 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = Employee::all();
-        $toView = array();
+        $employees = Employee::paginate(5);
         foreach ($employees as $employee) {
             if ($employee) {
                 $contract = Contract::find($employee->contract_id);
                 if ($contract) {
                     $employee->contract_id = $contract->name;
-                    array_push($toView, $employee);
                 }
             }
         };
-
-        return Response::json($toView);
+        return Response::json($employees);
     }
 
 

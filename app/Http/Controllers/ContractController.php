@@ -38,7 +38,6 @@ class ContractController extends Controller
     public function destroy($id)
     {
         Contract::destroy($id);
-
         Response::json(array('success' => true));
     }
 }

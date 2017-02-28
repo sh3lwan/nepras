@@ -12,8 +12,17 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
 
 
         //Get employees from server
-        $scope.employees = Employee.query();
+        var main = {currentPage: 1, numPages: 1};
 
+        var loadEmployees = function () {
+            Employee.query({page: main.currentPage}, function (result, headers) {
+                $scope.employees = result;
+
+                //Get parameter 'number of pages'
+                main.numPages = headers()['Page-Count'];
+            });
+        };
+        loadEmployees();
 
         //Validate if date is in proper range of values
         $scope.checkDate = function () {
@@ -29,6 +38,7 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
         };
 
 
+        //Deletes Employee (Soft Deletes)
         $scope.deleteEmployee = function (employee) {
             //Show pop up message to ask if user sure about delete
             if (popupService.showPopup('Are you sure?')) {
@@ -161,6 +171,25 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
             $scope.fileShown = true;
             $scope.fileRequired = true;
         }
+
+
+        //Get the next number of paginated employees from server
+        $scope.nextPage = function () {
+            $scope.disableNext = false;
+            if (main.currentPage < main.numPages) {
+                main.currentPage++;
+                loadEmployees();
+            }
+
+        };
+
+        //Get the previous number of paginated employees from server
+        $scope.previousPage = function () {
+            if (main.currentPage > 1) {
+                main.currentPage--;
+                loadEmployees();
+            }
+        };
     }
 );
 

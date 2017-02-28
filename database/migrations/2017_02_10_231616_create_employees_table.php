@@ -22,7 +22,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('contract_id')->unsigned();
             $table->foreign('contract_id')
                 ->references('id')->on('contracts')
-                ->onDelete('cascade');
+                ->onDelete('CASCADE')->onUpdate('CASCADE');
 
             $table->softDeletes();
             $table->timestamps();

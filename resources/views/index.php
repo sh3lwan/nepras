@@ -100,7 +100,13 @@
 
     <a href="contracts.php" class="btn btn-info">Contracts Page</a>
 
+    <div class="change-page pull-right">
+        <button ng-hide="disablePrevious" class="btn btn-primary" ng-click="previousPage()">Previous Page</button>
+        <button ng-hide="disableNext" class="btn btn-success" ng-click="nextPage()">Next Page</button>
+    </div>
+
     <div class="text-center">
+
         <table>
             <tr class="top-row">
                 <td>Image</td>
@@ -141,6 +147,7 @@
 
 
         </table>
+
 
     </div>
 
