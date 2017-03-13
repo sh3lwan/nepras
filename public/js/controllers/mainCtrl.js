@@ -22,6 +22,7 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
                 main.numPages = headers()['Page-Count'];
             });
         };
+
         loadEmployees();
 
         //Validate if date is in proper range of values
@@ -30,7 +31,7 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
             var date = $filter('date')(new Date($scope.object.birth_date), 'yyyy');
 
             //Check if between 2000 and 1970.
-            var disable = date > 2000 || date < 1970;
+            var disable = date > 2000 || date < 1950;
 
             //Disable adding button if invalid date
             $scope.invalidDate = disable;
@@ -54,27 +55,23 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
 
         //Default values for Adding button(Add Employee, Choice 1)
         var submitValue = 0;
+
+
         showAdd();
 
+        var imagePath = 'image.jpg';
 
-        $scope.addEmployee = function () {
+        $scope.uploadImage = function (files) {
 
-            //Choice 1, Adding Employee
-            if (submitValue === 1) {
+            var image = files[0];
 
+            if (image != undefined && image != null) {
 
                 $scope.disableButton = true;
-
-                //Get files from input:file field
-                var fileInput = document.getElementById("uploaded-image");
-                var files = fileInput.files;
-                var image = files[0];
-
 
                 //Append image to form data
                 var fd = new FormData();
                 fd.append('image', image);
-
 
                 //Send to server to upload image
                 $http.post('upload', fd, {
@@ -82,85 +79,152 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
                     headers: {'Content-Type': undefined}
                 }).then(
                     function (response) {
-
-                        var imagePath = 'image.jpg';
-
                         //When upload succeeds, server returns file uploaded name
                         if (response.data.success) {
                             imagePath = response.data.image;
+                            console.log(imagePath);
                         }
-
-                        $scope.object.image = imagePath;
-                        $scope.object.contract_id = $scope.contractSelected.id;
-
-                        var employee = $scope.object;
-
-
-                        //Adding request to the server to add new employee
-                        Employee.save(employee, function (dataResponse) {
-
-                            if (dataResponse.success) {
-                                $scope.errorShown = false;
-                                $scope.successShown = true;
-                                $scope.success = 'Employee Added Successfuly';
-                                employee['contract_id'] = $scope.contractSelected.name;
-                                $scope.employees.splice(0, 0, employee);
-                            } else {
-                                //If adding failed, show error messages
-                                $scope.errorShown = true;
-                                $scope.error = dataResponse.message.identity[0];
-                            }
-                        });
-                    }, function (error) {
-                        //
-                    });
-
-
-                //Choice 2, Update Employee
-            } else if (submitValue == 2) {
-
-
-                $scope.object.birth_date = $filter('date')(new Date($scope.object.birth_date), 'yyyy-MM-dd');
-                $scope.object.contract_id = $scope.contractSelected.id;
-                $scope.disableButton = true;
-                Employee.update($scope.object, function (response) {
-                    if (response.success) {
-                        $scope.success = response.message;
-                        $scope.successShown = true;
-                        $window.location.reload();
-                    } else {
-                        $scope.error = response.message;
-                        $scope.errorShown = true;
+                        $scope.disableButton = false;
                     }
-                });
-
-            } else {
-
+                );
             }
-
-
-            //After 3 seconds, return to default values
-            $timeout(function () {
-                $scope.errorShown = false;
-                $scope.successShown = false;
-                $scope.disableButton = false;
-                showAdd();
-            }, 3000);
         };
 
 
+        $scope.cancelSubmit = function () {
+            submitValue = 0;
+            viewTab();
+            $scope.object = null;
+        };
+
+        $scope.addEmployee = function () {
+            //
+            // var family = getFamily();
+            //
+            // //Get files from input:file field
+            // var fileInput = document.getElementById("uploaded-image");
+            // var files = fileInput.files;
+            // var image = files[0];
+            //
+            // //
+            // // //Choice 1, Adding Employee
+            // // if (submitValue === 1) {
+            //
+            //
+            // if (image != undefined && image != null) {
+            //
+            //     $scope.disableButton = true;
+            //     //Append image to form data
+            //     var fd = new FormData();
+            //     fd.append('image', image);
+            //
+            //     //Send to server to upload image
+            //     $http.post('upload', fd, {
+            //         transformRequest: angular.identity,
+            //         headers: {'Content-Type': undefined}
+            //     }).then(
+            //         function (response) {
+            //
+            //             var imagePath = 'image.jpg';
+            //
+            //             //When upload succeeds, server returns file uploaded name
+            //             if (response.data.success) {
+            //                 imagePath = response.data.image;
+            //             }
+            console.log(submitValue);
+            var uploadedImage = getImage();
+
+            var family = getFamily();
+            var employee = angular.copy($scope.object);
+            employee.birth_date = $filter('date')(employee.birth_date, 'yyyy-MM-dd');
+            employee.image = imagePath;
+            employee.family = family;
+            employee.contract_id = $scope.contractSelected.id;
+
+            if (submitValue == 0) {
+                //Adding request to the server to add new employee
+                if (uploadedImage != undefined && uploadedImage != null) {
+
+                    Employee.save(employee, function (dataResponse) {
+
+                        if (dataResponse.success) {
+                            // $scope.errorShown = false;
+                            // $scope.successShown = true;
+                            // $scope.success = 'Employee Added Successfuly';
+                            window.location.href = 'index.php';
+                        } else {
+                            //If adding failed, show error messages
+                            $scope.errorShown = true;
+                            $scope.error = dataResponse.message.identity[0];
+                        }
+
+                    });
+                }
+            }
+
+            else if (submitValue == 1) {
+
+                if (uploadedImage == undefined) {
+                    employee.image = '';
+                }
+
+                Employee.update(employee, function (dataResponse) {
+                    if (dataResponse.success) {
+
+                    } else {
+                        //If adding failed, show error messages
+                        $scope.errorShown = true;
+                        $scope.error = dataResponse.message.identity[0];
+                    }
+
+                });
+
+                $scope.object = null;
+                submitValue = 0;
+            }
+
+
+            //
+//
+// //Choice 2, Update Employee
+//             } else if (submitValue == 2) {
+//
+//
+//                 $scope.object.birth_date = $filter('date')(new Date($scope.object.birth_date), 'yyyy-MM-dd');
+//                 $scope.object.contract_id = $scope.contractSelected.id;
+//                 $scope.disableButton = true;
+//                 Employee.update($scope.object, function (response) {
+//                     if (response.success) {
+//                         $scope.success = response.message;
+//                         $scope.successShown = true;
+//                         $window.location.reload();
+//                     } else {
+//                         $scope.error = response.message;
+//                         $scope.errorShown = true;
+//                     }
+//                 });
+//
+//             } else {
+//
+//             }
+            // //After 3 seconds, return to default values
+            // $timeout(function () {
+            //     $scope.errorShown = false;
+            //     $scope.successShown = false;
+            //     $scope.disableButton = false;
+            //     showAdd();
+            // }, 3000);
+            //
+            //
+
+        };
+
         //Change choice to update employee
         $scope.updateEmployee = function (employee) {
-            submitValue = 2;
-            $scope.fileShown = false;
-
-            //Fill data from employee chosen to input fields
-            $scope.object = employee;
-            $scope.object.birth_date = new Date(employee.birth_date);
-            $scope.buttonValue = 'Update Employee';
-            $scope.fileRequired = false;
-            $window.scrollTo(0, 0);
-
+            submitValue = 1;
+            updateTab(employee.image);
+            $scope.object = angular.copy(employee);
+            $scope.object.birth_date = new Date($scope.object.birth_date);
         };
 
 
@@ -190,6 +254,74 @@ app.controller('mainController', function ($scope, $window, $filter, $http, $tim
                 loadEmployees();
             }
         };
+
+
+        //Get Family member using JQuery from Family Tab
+        var getFamily = function () {
+            var family = [];
+            $('.mt-repeater-item').each(function (index, element) {
+                    var valid = true;
+                    var member = {name: '', date: '', relation: ''};
+
+                    $(element).find('input,select').each(function (index, element) {
+
+                        var value = $(this).val();
+                        if (index != 1 && value != null && value != undefined) {
+                            value = value.trim();
+                        }
+
+                        if (value == '' || value == "? undefined:undefined ?" || value == null || value == undefined) {
+                            valid = false;
+                        }
+
+                        switch (index) {
+                            case 0:
+                                member.name = value;
+                                break;
+                            case 1:
+                                member.date = value;
+                                break;
+                            case 2:
+                                member.relation = value;
+                                break;
+                        }
+                    });
+
+                    if (valid) {
+                        family.push(member);
+                    }
+                }
+            );
+            // console.log(family);
+            return family;
+        };
+
+
+        var updateTab = function (image) {
+            $('#tab1').parent().removeClass('active');
+            $('#tab2').parent().addClass('active');
+            $('#portlet_comments_1').removeClass('active');
+            $('#portlet_comments_2').addClass('active');
+            $('#image-preview').attr('src', 'avatars/' + image);
+        };
+
+        var viewTab = function (image) {
+            $('#tab2').parent().removeClass('active');
+            $('#tab1').parent().addClass('active');
+            $('#portlet_comments_2').removeClass('active');
+            $('#portlet_comments_1').addClass('active');
+            var file = $("#uploaded-image");
+            $('#image-preview').attr('src', "/avatars/image.jpg").val('');
+            file.val('');
+        };
+
+
+        var getImage = function () {
+            var fileInput = document.getElementById('uploaded-image');
+            var files = fileInput.files;
+            var image = files[0];
+            return image;
+        }
     }
 );
 

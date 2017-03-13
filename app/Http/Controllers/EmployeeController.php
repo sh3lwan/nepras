@@ -14,7 +14,7 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = Employee::paginate(5);
+        $employees = Employee::paginate(6);
         foreach ($employees as $employee) {
             if ($employee) {
                 $contract = Contract::find($employee->contract_id);
@@ -46,7 +46,21 @@ class EmployeeController extends Controller
         $employee = Employee::create($request->all());
         $employee->image = $request->image;
         $employee->save();
-        return Response::json(array('success' => true, 'employee' => $employee));
+
+
+        $response = array('success' => true);
+        $family = $request->input('family');
+        foreach ($family as $member) {
+            $member['relative_id'] = $employee->id;
+            $add = FamilyMember::create($member);
+            if (!$add) {
+                $response['success'] = false;
+            }
+        }
+
+        $employee['family'] = $family;
+        $response['employee'] = $employee;
+        return Response::json($response);
 
     }
 
@@ -56,25 +70,40 @@ class EmployeeController extends Controller
         $ssn = $request->input('identity');
         $id = $request->input('id');
 
+
+        //Check if SSN exists for another employee
         $exist = Employee::where('identity', $ssn)->get();
         if ($exist) {
+
             foreach ($exist as $emp) {
                 if ($emp->id != $id) {
                     return Response::json(array('success' => false, 'message' => 'Employee update Failed'));
                 }
             }
+
+
         }
 
-        $employee = Employee::find($id)
-            ->update($request->all());
+        $newEmployee = $request->all();
+        $image = $request->input('image');
+        $oldEmployee = Employee::find($id);
 
-        if ($employee) {
-            return Response::json(array('success' => true,
-                'message' => 'Employee updated Successfully',
-            ));
+        if ($image == '') {
+            $image = $oldEmployee->image;
         }
 
-        return Response::json(array('success' => false, 'message' => 'Employee update failed'));
+        $oldEmployee->update($newEmployee);
+        $oldEmployee->image = $image;
+        $oldEmployee->save();
+        return $oldEmployee;
+
+//        if ($employee) {
+//            return Response::json(array('success' => true,
+//                'message' => 'Employee updated Successfully'
+//            ));
+//        }
+//
+//        return Response::json(array('success' => false, 'message' => 'Employee update failed'));
 
 
     }

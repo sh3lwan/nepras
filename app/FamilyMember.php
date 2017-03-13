@@ -9,6 +9,6 @@ class FamilyMember extends Model
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     protected $table = 'family';
-    protected $fillable = ['name', 'contract_id', 'address', 'birth_date', 'identity'];
+    protected $fillable = ['name', 'relative_id', 'birth_date'];
 
 }

@@ -1,60 +1,50 @@
-.top-row {
-    background: darkgrey;
+.mt-comments .mt-comment .mt-comment-img>img {
+    border-radius: 0px;
+    width: 80px;
+    height:80px;
 }
 
-.row-entry {
-    background: gainsboro;
+.mt-comments .mt-comment .mt-comment-body {
+    padding-left: 60px;
+    position: relative;
+    overflow: hidden;
 }
 
-table td img {
-    width: 120px;
-    height: 120px;
+.mt-comments .mt-comment .mt-comment-body .mt-comment-info .mt-comment-date {
+    float: none;
+    padding-left: 10px;
+    font-size: 15px;
+    color: slategray;
 }
 
-table {
-    border: 1px solid black;
-    margin-top: 10px;
-    margin-bottom: 10px;
-
+.mt-comments .mt-comment .mt-comment-body .mt-comment-details .mt-comment-status.mt-comment-status-pending {
+    color: grey;
 }
 
-td {
-    padding: 10px;
-    border: 1px solid black;
+.upload-image input[type="file"] {
+    display: none;
 }
 
-.add-data {
-    margin-top: 50px;
-    width: 500px;
-    margin-bottom: 50px;
-    padding: 10px;
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
 }
 
-.error {
-    margin-top: 50px;
-    background-color: rgba(255, 0, 0, 0.2);
-    color: black;
-    border: 1px solid white;
-    padding: 10px;
+.mt-repeater {
+    margin: 20px;
 }
 
-.success {
-    background-color: rgba(0, 255, 0, 0.2);
-    color: indianred;
-    border: 1px solid black;
-    padding: 10px
+.mt-repeater .mt-repeater-delete {
+    margin-top: 0;
 }
 
-.add-contract {
-    margin-top: 50px;
-    width: 500px;
-}
+.mt-repeater .mt-repeater-item {
+     border-bottom: none;
 
-.contract-table {
-    width: 100%;
 }
-
-.change-page{
+.mt-comment-ssn{
+    color: #0d1318;
     margin-bottom: 10px;
 }
-

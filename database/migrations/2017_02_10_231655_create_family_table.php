@@ -20,7 +20,7 @@ class CreateFamilyTable extends Migration
             $table->integer('relative_id')->unsigned();
             $table->foreign('relative_id')
                 ->references('id')->on('employees')
-                ->onDelete('set null')->onUpdate('CASCADE');
+                ->onDelete('restrict')->onUpdate('restrict');
 
             $table->softDeletes();
             $table->timestamps();
