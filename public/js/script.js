@@ -28,25 +28,25 @@ $(document).ready(function () {
 
 //Family Tab
 
-//Add family form
-    $('#add-family-member').click(function () {
-        var name = $('.mt-repeater-item .mt-repeater-input input').first().val();
-        var date = $('.mt-repeater-item .mt-repeater-input input[type="date"]').first().val();
-        var relation = $('.mt-repeater-item .mt-repeater-input select').first().val();
-        if (relation != '? undefined:undefined ?' && name != '' && date != '') {
-            $('.mt-repeater').last().append($('.mt-repeater-item').first().clone());
-        }
-    });
-
-//Delete family form
-    $(document).on("click", '.mt-repeater-delete', function () {
-
-        var elem = $(this).parent().parent();
-        var length = $('.mt-repeater-item').length;
-        if (length != 1) {
-            elem.remove();
-        }
-    });
+// //Add family form
+//     $('#add-family-member').click(function () {
+//         var name = $('.mt-repeater-item .mt-repeater-input input').first().val();
+//         var date = $('.mt-repeater-item .mt-repeater-input input[type="date"]').first().val();
+//         var relation = $('.mt-repeater-item .mt-repeater-input select').first().val();
+//         if (relation != '? undefined:undefined ?' && name != '' && date != '') {
+//             $('.mt-repeater').last().append($('.mt-repeater-item').first().clone());
+//         }
+//     });
+//
+// //Delete family form
+//     $(document).on("click", '.mt-repeater-delete', function () {
+//
+//         var elem = $(this).parent().parent();
+//         var length = $('.mt-repeater-item').length;
+//         if (length != 1) {
+//             elem.remove();
+//         }
+//     });
 
 //Image Tab
 //Change Image Preview
@@ -75,15 +75,33 @@ $(document).ready(function () {
         file.val('');
     });
 //
-//
+
 //Information Tab
     $('#submit-form').click(function () {
-        // if (file.val() == '') {
-        //     $('.sub-tab .tab-pane').removeClass('active');
-        //     $('#Image-tab').addClass('active');
-        //     $('#sub_tab li').removeClass('active');
-        //     $('#image-sub-tab').parent().addClass('active');
-        // }
+        if (file.val() == '') {
+            $('.sub-tab .tab-pane').removeClass('active');
+            $('#Image-tab').addClass('active');
+            $('#sub_tab li').removeClass('active');
+            $('#image-sub-tab').parent().addClass('active');
+        }
+    });
+
+    $('#cancelSubmit').click(function () {
+        $('#tab2').parent().removeClass('active');
+        $('#tab1').parent().addClass('active');
+        $('#portlet_comments_2').removeClass('active');
+        $('#portlet_comments_1').addClass('active');
+        var file = $("#uploaded-image");
+        $('#image-preview').attr('src', "/avatars/image.jpg").val('');
+        file.val('');
+    });
+
+    $('#viewFamily').click(function () {
+        console.log('Here');
+        $('.sub-tab .tab-pane').removeClass('active');
+        $('#Family-tab').addClass('active');
+        $('#sub_tab li').removeClass('active');
+        $('#family-sub-tab').parent().addClass('active');
     });
 
 //Export to PDF

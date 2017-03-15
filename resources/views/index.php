@@ -24,8 +24,10 @@
 
     <script src="js/app.js"></script>
     <script src="js/controllers/mainCtrl.js"></script>
+    <script src="js/controllers/familyCtrl.js"></script>
     <script src="js/services/employee.service.js"></script>
     <script src="js/services/contract.service.js"></script>
+    <script src="js/services/family.service.js"></script>
     <script src="js/services/popup.service.js"></script>
     <script src="js/script.js"></script>
 
@@ -89,10 +91,7 @@
                                     </span>
                                     <ul class="mt-comment-actions">
                                         <li>
-                                            <a ng-click="updateEmployee(employee)">Edit</a>
-                                        </li>
-                                        <li>
-                                            <a href="family.php?relative_id={{employee.id}}">View</a>
+                                            <a href="#?id={{employee.id}}" ng-click="updateEmployee(employee)">Edit</a>
                                         </li>
                                         <li>
                                             <a href="#" ng-click="deleteEmployee(employee)">Delete</a>
@@ -118,14 +117,14 @@
                             <li>
                                 <a id="image-sub-tab" href="#" data-toggle="tab">Image</a>
                             </li>
-
-                            <li>
-                                <a href="#" data-toggle="tab">Family</a>
-                            </li>
-
                             <li>
                                 <a href="#" data-toggle="tab">Contract</a>
                             </li>
+
+                            <li>
+                                <a id="family-sub-tab" href="#" data-toggle="tab">Family</a>
+                            </li>
+
 
                         </ul>
 
@@ -139,13 +138,14 @@
                                     <div class="caption">
                                             <span
                                                 class="caption-subject font-green sbold uppercase">Basic Information</span>
+                                        <span ng-show="showMessage">{{message}}</span>
                                     </div>
                                 </div>
 
 
                                 <div class="portlet-body form">
                                     <!-- BEGIN FORM-->
-                                    <form novalidate ng-submit="addEmployee()" method="POST"
+                                    <form ng-submit="addEmployee()" method="POST"
                                           enctype="multipart/form-data"
                                           class="form-horizontal form-bordered">
 
@@ -163,7 +163,6 @@
                                                            title="Only 10 numbers allowed" maxlength="10"
                                                            ng-model="object.identity">
                                                     <span ng-show="errorShown">{{error}}</span>
-                                                    <span ng-show="successShown">{{success}}</span>
                                                 </div>
                                             </div>
 
@@ -209,7 +208,10 @@
                                                             class="btn blue">
                                                         Submit
                                                     </button>
-                                                    <button ng-click="cancelSubmit()" type="button" class="btn default">Cancel</button>
+                                                    <button ng-click="cancelSubmit()" id="cancelSubmit" type="button"
+                                                            class="btn default">
+                                                        Cancel
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -228,6 +230,7 @@
                                     <div class="caption">
                                             <span
                                                 class="caption-subject font-green sbold uppercase">Choose Image</span>
+                                        <span ng-show="imageMessage">Please choose image first!</span>
                                     </div>
                                 </div>
 
@@ -262,75 +265,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="tab-pane" id="Family-tab">
-
-                            <div class="portlet light form-fit bordered">
-
-
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                            <span
-                                                class="caption-subject font-green sbold uppercase">Family Members</span>
-                                    </div>
-                                </div>
-
-                                <div class="portlet-body form">
-                                    <!-- BEGIN FORM-->
-                                    <div class="form-body">
-                                        <div class="form-group">
-                                            <form action="#" class="mt-repeater form-horizontal">
-
-                                                <div class="mt-repeater-item">
-                                                    <!-- jQuery Repeater Container -->
-                                                    <div class="mt-repeater-input">
-                                                        <label class="control-label">Name</label>
-                                                        <br>
-                                                        <input type="text" pattern="\D{1,}" tilte="Only letters allowed"
-                                                               required ng-model="familyMember.name"
-                                                               class="form-control">
-                                                    </div>
-
-                                                    <div class="mt-repeater-input">
-                                                        <label class="control-label">Birth Date</label>
-                                                        <br>
-                                                        <input
-                                                            class="input-group form-control form-control-inline date date-picker"
-                                                            size="16" type="date" required
-                                                            ng-model="familyMember.birth_date"
-                                                        >
-                                                    </div>
-
-                                                    <div class="mt-repeater-input">
-                                                        <label class="control-label">Relation</label>
-                                                        <br>
-                                                        <select ng-model="familyMember.relation" class="form-control">
-                                                            <option value="Wife">Wife</option>
-                                                            <option value="Husband">Husband</option>
-                                                            <option value="Son">Son</option>
-                                                            <option value="Daughter">Daughter</option>
-                                                            <option value="Other">Other</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="mt-repeater-input">
-                                                        <a href="#"
-                                                           class="btn btn-danger mt-repeater-delete">
-                                                            Delete
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                        </div>
-
-                                        <a href="#" id="add-family-member"
-                                           class="btn btn-success mt-repeater-add">
-                                            Add
-                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -389,6 +323,122 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        <div class="tab-pane" id="Family-tab">
+                            <div class="mt-cant-add">
+                                <span
+                                    ng-hide="canAdd">You can't add family members unless you submit employee first!</span>
+                            </div>
+                            <div class="portlet light form-fit bordered" ng-show="canAdd">
+
+
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                            <span
+                                                class="caption-subject font-green sbold uppercase">Family Members</span>
+                                        <span ng-show="showFamilyMessage">{{familyMessage}}</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="portlet-body">
+                                    <div class="mt-element-list">
+
+                                        <div class="mt-list-head list-news ext-1 font-white bg-yellow-crusta">
+                                            <div class="list-head-title-container">
+                                                <h3 class="list-title">Family Members</h3>
+                                            </div>
+                                            <div class="list-count pull-right bg-yellow-saffron">{{familyNumber}}</div>
+                                        </div>
+
+                                        <div class="mt-list-container list-news ext-2">
+                                            <ul>
+
+
+                                                <li class="mt-list-item" ng-repeat="member in family">
+
+                                                    <div class="list-datetime bold uppercase font-yellow-casablanca">
+                                                        {{member.birth_date}}
+                                                    </div>
+                                                    <div class="list-item-content">
+                                                        <h3 class="text-capitalize bold">
+                                                            <span>{{member.name}}</span>
+                                                        </h3>
+                                                        <span class="lead text-capitalize">{{member.relation}}</span>
+                                                        <div class="edit-family pull-right">
+                                                            <a ng-click="enableUpdate(member,$index)">Edit</a>
+                                                            <a ng-click="deleteMember(member)">Delete</a>
+                                                        </div>
+
+
+                                                    </div>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="portlet-body form" ng-show="canAdd">
+                                    <!-- BEGIN FORM-->
+
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <form class="mt-repeater form-horizontal">
+
+                                                <div class="mt-repeater-item">
+                                                    <!-- jQuery Repeater Container -->
+                                                    <div class="mt-repeater-input">
+                                                        <label class="control-label">Name</label>
+                                                        <br>
+                                                        <input type="text" pattern="\D{1,}" tilte="Only letters allowed"
+                                                               required ng-model="familyMember.name"
+                                                               class="form-control">
+                                                    </div>
+
+                                                    <div class="mt-repeater-input">
+                                                        <label class="control-label">Birth Date</label>
+                                                        <br>
+                                                        <input
+                                                            class="input-group form-control form-control-inline date date-picker"
+                                                            size="16" type="date" required
+                                                            ng-model="familyMember.birth_date">
+                                                    </div>
+
+                                                    <div class="mt-repeater-input">
+                                                        <label class="control-label">Relation</label>
+                                                        <br>
+                                                        <select required ng-model="familyMember.relation"
+                                                                class="form-control">
+                                                            <option value="Wife">Wife</option>
+                                                            <option value="Husband">Husband</option>
+                                                            <option value="Son">Son</option>
+                                                            <option value="Daughter">Daughter</option>
+                                                            <option value="Other">Other</option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                        </div>
+
+                                        <a ng-hide="updateShown" ng-click="addMember()"
+                                           class="btn btn-success mt-repeater-add">
+                                            ADD
+                                        </a>
+
+                                        <a ng-show="updateShown" ng-click="updateMember()"
+                                           class="btn btn-success mt-repeater-add">
+                                            Update
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>

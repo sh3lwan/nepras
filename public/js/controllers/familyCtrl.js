@@ -2,13 +2,13 @@ app.controller('familyController', function (Family, popupService, $window, $fil
 
     //Get relative id from Url using JavaScript
     var id = location.search;
-    id = id.split('=')[1];
+    location.id = id.split('=')[1];
 
 
     //If error in relative id, user can't do anything, redirected to home page.
     if (id == null || id == '' || id == undefined) {
         $scope.canAdd = false;
-        window.location.href = 'index.php';
+        // window.location.href = 'index.php';
     } else {
 
         $scope.canAdd = true;
@@ -16,12 +16,7 @@ app.controller('familyController', function (Family, popupService, $window, $fil
 
 
         //Get family for relative id provided from server
-        Family.get({id: id}, function (response) {
-            if (response.success) {
-                $scope.family = response.family;
-                $scope.canAdd = true;
-            }
-        });
+
     }
 
 
@@ -70,6 +65,7 @@ app.controller('familyController', function (Family, popupService, $window, $fil
             //Choice is Add
             if (submitValue == 1) {
                 Family.save(member, function (response) {
+                    var memberID = response.member.id;
                     $scope.family.splice(0, 0, member);
                 });
 
@@ -79,7 +75,7 @@ app.controller('familyController', function (Family, popupService, $window, $fil
                 Family.update({id: member.id, data: member}, function (response) {
                     if (response.success) {
                         //Reload page after update
-                        $window.location.reload();
+                        // $window.location.reload();
                     } else {
                         //Change and show error message
                         $scope.error = "Update failed";

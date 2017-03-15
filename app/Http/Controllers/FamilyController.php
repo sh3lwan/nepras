@@ -22,13 +22,18 @@ class FamilyController extends Controller
     public function store(Request $request)
     {
 
+        $name = $request->input('name');
+        $relative_id = $request->input('relative_id');
+        $birth_date = $request->input('birth_date');
+
         $member = new FamilyMember();
-        $member->name = $request->input('name');
-        $member->birth_date = $request->input('birth_date');
-        $member->relative_id = $request->input('relative_id');
-        $member->relation = $request->input('relation');
-        $member->save();
-        return Response::json(array('success' => true, 'member' => $member));
+
+        $member->name = $name;
+        $member->relative_id = $relative_id;
+        $member->birth_date = $birth_date;
+        $response = $member->save();
+        return Response::json(array('success' => $response, 'member' => $member));
+
     }
 
     public function show($id)
@@ -46,10 +51,10 @@ class FamilyController extends Controller
     {
         $data = $request->input('data');
         $member = FamilyMember::find($id);
-        $member->update($data);
+        $response = $member->update($data);
         $member->relation = $data['relation'];
-        $member->save();
-        return Response::json(array('success' => true));
+        $response = $response && $member->save();
+        return Response::json(array('success' => $response, 'member' => $member));
     }
 
     public function destroy($id)

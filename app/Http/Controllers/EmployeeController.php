@@ -47,18 +47,7 @@ class EmployeeController extends Controller
         $employee->image = $request->image;
         $employee->save();
 
-
         $response = array('success' => true);
-        $family = $request->input('family');
-        foreach ($family as $member) {
-            $member['relative_id'] = $employee->id;
-            $add = FamilyMember::create($member);
-            if (!$add) {
-                $response['success'] = false;
-            }
-        }
-
-        $employee['family'] = $family;
         $response['employee'] = $employee;
         return Response::json($response);
 
@@ -73,11 +62,12 @@ class EmployeeController extends Controller
 
         //Check if SSN exists for another employee
         $exist = Employee::where('identity', $ssn)->get();
+
         if ($exist) {
 
             foreach ($exist as $emp) {
                 if ($emp->id != $id) {
-                    return Response::json(array('success' => false, 'message' => 'Employee update Failed'));
+                    return Response::json(array('success' => false, 'message' => 'Update failed!'));
                 }
             }
 
@@ -92,18 +82,16 @@ class EmployeeController extends Controller
             $image = $oldEmployee->image;
         }
 
-        $oldEmployee->update($newEmployee);
+        $response = $oldEmployee->update($newEmployee);
         $oldEmployee->image = $image;
-        $oldEmployee->save();
-        return $oldEmployee;
+        $oldEmployee->identity = $request->input('identity');
+        $response = $response && $oldEmployee->save();
 
-//        if ($employee) {
-//            return Response::json(array('success' => true,
-//                'message' => 'Employee updated Successfully'
-//            ));
-//        }
-//
-//        return Response::json(array('success' => false, 'message' => 'Employee update failed'));
+
+        return Response::json(array('success' => $response,
+            'message' => 'Updated Successfully',
+            'employee' => $oldEmployee
+        ));
 
 
     }
