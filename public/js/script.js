@@ -6,12 +6,22 @@ $(document).ready(function () {
         $('#tab2').parent().removeClass('active');
         $('#portlet_comments_1').addClass('active');
         $('#portlet_comments_2').removeClass('active');
+        $('#portlet_comments_3').removeClass('active');
     });
     $('#tab2').click(function () {
         $(this).parent().addClass('active');
         $('#tab1').parent().removeClass('active');
         $('#portlet_comments_2').addClass('active');
         $('#portlet_comments_1').removeClass('active');
+        $('#portlet_comments_3').removeClass('active');
+    });
+
+    $('#tab3').click(function () {
+        $(this).parent().addClass('active');
+        $('#tab1').parent().removeClass('active');
+        $('#portlet_comments_3').addClass('active');
+        $('#portlet_comments_1').removeClass('active');
+        $('#portlet_comments_2').removeClass('active');
     });
 
 
@@ -104,14 +114,42 @@ $(document).ready(function () {
         $('#family-sub-tab').parent().addClass('active');
     });
 
-//Export to PDF
-    var doc = new jsPDF();
+    function html2pdf() {
+        var dom = document.getElementById('portlet_comments_3'),
+            canvas = document.getElementById('#canvas');
+        html2canvas(dom, {
+            canvas: canvas, // dom -> canvas
+            onrendered: function (canvas) { // canvas -> image
+                // var dataURL = canvas.toDataURL();
+                // // document.getElementById(imgID).src = dataURL;
+                demoFromHTML('Test');
+            }
+        });
+    }
+
 
     $('#export-pdf').click(function () {
-        doc.fromHTML($('#content').get(0), 15, 15, {
-            'width': 170
-        });
-        doc.save('sample-file.pdf');
+        demoFromHTML();
     });
 
+    function demoFromHTML() {
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        source = $('#pdf-content')[0];
+
+        specialElementHandlers = {
+            '#bypassme': function (element, renderer) {
+                return true
+            }
+        };
+
+        pdf.fromHTML(
+            source,
+            {
+                'width': 900,
+                'elementHandlers': specialElementHandlers
+            }
+        );
+        pdf.save('*', 'Test.pdf');
+    }
 });
+

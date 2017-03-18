@@ -14,7 +14,8 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = Employee::paginate(6);
+
+        $employees = Employee::paginate(15);
         foreach ($employees as $employee) {
             if ($employee) {
                 $contract = Contract::find($employee->contract_id);

@@ -19,7 +19,6 @@
 
     <script src="js/lib/angular.min.js"></script>
     <script src="js/lib/angular-resource.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
     <script src="js/lib/jquery.min.js"></script>
 
     <script src="js/app.js"></script>
@@ -29,7 +28,15 @@
     <script src="js/services/contract.service.js"></script>
     <script src="js/services/family.service.js"></script>
     <script src="js/services/popup.service.js"></script>
+
+    <script type="text/javascript" src="js/tableExport.js"></script>
+    <script type="text/javascript" src="js/jquery.base64.js"></script>
+    <script type="text/javascript" src="js/jspdf/libs/sprintf.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
+    <script type="text/javascript" src="js/jspdf/libs/base64.js"></script>
+
     <script src="js/script.js"></script>
+
 
 </head>
 
@@ -43,6 +50,7 @@
             <div class="caption">
                 <i class="icon-bubbles font-dark hide"></i>
                 <span class="caption-subject font-dark bold uppercase">Employees</span>
+
             </div>
 
             <ul class="nav nav-tabs">
@@ -50,9 +58,11 @@
                     <a id="tab1" href="#portlet_comments_1" data-toggle="tab"> View </a>
                 </li>
                 <li>
-                    <a id="tab2" href="#portlet_comments_2" data-toggle="tab"> ADD </a>
+                    <a id="tab2" href="#portlet_comments_2" data-toggle="tab"> New </a>
                 </li>
-
+                <li>
+                    <a id="tab3" href="#portlet_comments_3" data-toggle="tab"> Export </a>
+                </li>
             </ul>
 
         </div>
@@ -62,6 +72,14 @@
             <div class="tab-content">
 
                 <div class="tab-pane active" id="portlet_comments_1">
+                    <div class="mt-action-buttons pull-right">
+                        <div class="btn-group btn-group-circle">
+                            <button type="button" class="btn btn-outline green btn-sm" ng-click="previousPage()">
+                                Previous
+                            </button>
+                            <button type="button" class="btn btn-outline red btn-sm" ng-click="nextPage()">Next</button>
+                        </div>
+                    </div>
 
                     <!-- BEGIN: Employees -->
                     <div id="content" class="mt-comments">
@@ -169,7 +187,8 @@
                                             <div class="form-group">
                                                 <label class="control-label col-md-3">Name</label>
                                                 <div class="col-md-4">
-                                                    <input class="form-control" placeholder="Full Name" id="fullName"
+                                                    <input class="form-control" placeholder="Full Name"
+                                                           id="fullName"
                                                            ng-model="object.name" required pattern="\D{1,}"
                                                            tilte="Only letters allowed" maxlength="20">
                                                 </div>
@@ -204,11 +223,13 @@
                                         <div class="form-actions">
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-9">
-                                                    <button ng-disabled="disableButton" type="submit" id="submit-form"
+                                                    <button ng-disabled="disableButton" type="submit"
+                                                            id="submit-form"
                                                             class="btn blue">
                                                         Submit
                                                     </button>
-                                                    <button ng-click="cancelSubmit()" id="cancelSubmit" type="button"
+                                                    <button ng-click="cancelSubmit()" id="cancelSubmit"
+                                                            type="button"
                                                             class="btn default">
                                                         Cancel
                                                     </button>
@@ -349,7 +370,8 @@
                                             <div class="list-head-title-container">
                                                 <h3 class="list-title">Family Members</h3>
                                             </div>
-                                            <div class="list-count pull-right bg-yellow-saffron">{{familyNumber}}</div>
+                                            <div class="list-count pull-right bg-yellow-saffron">{{familyNumber}}
+                                            </div>
                                         </div>
 
                                         <div class="mt-list-container list-news ext-2">
@@ -358,14 +380,16 @@
 
                                                 <li class="mt-list-item" ng-repeat="member in family">
 
-                                                    <div class="list-datetime bold uppercase font-yellow-casablanca">
+                                                    <div
+                                                        class="list-datetime bold uppercase font-yellow-casablanca">
                                                         {{member.birth_date}}
                                                     </div>
                                                     <div class="list-item-content">
                                                         <h3 class="text-capitalize bold">
                                                             <span>{{member.name}}</span>
                                                         </h3>
-                                                        <span class="lead text-capitalize">{{member.relation}}</span>
+                                                        <span
+                                                            class="lead text-capitalize">{{member.relation}}</span>
                                                         <div class="edit-family pull-right">
                                                             <a ng-click="enableUpdate(member,$index)">Edit</a>
                                                             <a ng-click="deleteMember(member)">Delete</a>
@@ -393,7 +417,8 @@
                                                     <div class="mt-repeater-input">
                                                         <label class="control-label">Name</label>
                                                         <br>
-                                                        <input type="text" pattern="\D{1,}" tilte="Only letters allowed"
+                                                        <input type="text" pattern="\D{1,}"
+                                                               tilte="Only letters allowed"
                                                                required ng-model="familyMember.name"
                                                                class="form-control">
                                                     </div>
@@ -437,8 +462,52 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
+                <div class="tab-pane" id="portlet_comments_3">
+                    <div class="tools" id="bypassme">
+                        <a id="export-pdf">
+                            PDF
+                        </a>
 
+                        <a onclick="$('#export-table').tableExport({type:'excel',escape:'false'});">
+                            Excel
+                        </a>
+                    </div>
+
+                    <div class="portlet box red">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                Employees
+                            </div>
+
+                        </div>
+                        <div class="portlet-body" id="pdf-content">
+                            <div class="table-responsive">
+                                <table class="table" id="export-table">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Birth Date</th>
+                                        <th>Address</th>
+                                        <th>Contract</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="employee in employees | orderBy:'identity'">
+                                        <td>{{employee.identity}}</td>
+                                        <td>{{employee.name}}</td>
+                                        <td>{{employee.birth_date}}</td>
+                                        <td>{{employee.address}}</td>
+                                        <td>{{employee.contract_id}}</td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -447,5 +516,5 @@
 </div>
 
 
-</body>
+</body
 </html>

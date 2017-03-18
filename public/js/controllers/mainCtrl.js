@@ -17,7 +17,7 @@ app.controller('mainController', function ($scope, $filter, $http, $timeout, pop
         var loadEmployees = function () {
             Employee.query({page: main.currentPage}, function (result, headers) {
                 $scope.employees = result;
-
+                $scope.empLength = result.length;
                 //Get parameter 'number of pages'
                 main.numPages = headers()['Page-Count'];
             });
@@ -51,7 +51,6 @@ app.controller('mainController', function ($scope, $filter, $http, $timeout, pop
                 });
             }
         };
-
 
         var imagePath = 'image.jpg';
 
@@ -181,7 +180,6 @@ app.controller('mainController', function ($scope, $filter, $http, $timeout, pop
 
         //Get the next number of paginated employees from server
         $scope.nextPage = function () {
-            $scope.disableNext = false;
             if (main.currentPage < main.numPages) {
                 main.currentPage++;
                 loadEmployees();
@@ -317,7 +315,6 @@ app.controller('mainController', function ($scope, $filter, $http, $timeout, pop
         // End family section
 
 
-
         //JQuery
         var updateTab = function (image) {
             $('#tab1').parent().removeClass('active');
@@ -326,24 +323,6 @@ app.controller('mainController', function ($scope, $filter, $http, $timeout, pop
             $('#portlet_comments_2').addClass('active');
             $('#image-preview').attr('src', 'avatars/' + image);
         };
-
-        // var viewTab = function () {
-        //     $('#tab2').parent().removeClass('active');
-        //     $('#tab1').parent().addClass('active');
-        //     $('#portlet_comments_2').removeClass('active');
-        //     $('#portlet_comments_1').addClass('active');
-        //     var file = $("#uploaded-image");
-        //     $('#image-preview').attr('src', "/avatars/image.jpg").val('');
-        //     file.val('');
-        // };
-
-
-        // var imageTab = function () {
-        //     $('.sub-tab .tab-pane').removeClass('active');
-        //     $('#Image-tab').addClass('active');
-        //     $('#sub_tab li').removeClass('active');
-        //     $('#image-sub-tab').parent().addClass('active');
-        // };
 
 
     }
