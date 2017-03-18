@@ -4,6 +4,7 @@ $(document).ready(function () {
     $('#tab1').click(function () {
         $(this).parent().addClass('active');
         $('#tab2').parent().removeClass('active');
+        $('#tab3').parent().removeClass('active');
         $('#portlet_comments_1').addClass('active');
         $('#portlet_comments_2').removeClass('active');
         $('#portlet_comments_3').removeClass('active');
@@ -11,6 +12,7 @@ $(document).ready(function () {
     $('#tab2').click(function () {
         $(this).parent().addClass('active');
         $('#tab1').parent().removeClass('active');
+        $('#tab3').parent().removeClass('active');
         $('#portlet_comments_2').addClass('active');
         $('#portlet_comments_1').removeClass('active');
         $('#portlet_comments_3').removeClass('active');
@@ -19,6 +21,7 @@ $(document).ready(function () {
     $('#tab3').click(function () {
         $(this).parent().addClass('active');
         $('#tab1').parent().removeClass('active');
+        $('#tab2').parent().removeClass('active');
         $('#portlet_comments_3').addClass('active');
         $('#portlet_comments_1').removeClass('active');
         $('#portlet_comments_2').removeClass('active');
@@ -35,28 +38,6 @@ $(document).ready(function () {
         $(this).parent().addClass('active');
     });
 
-
-//Family Tab
-
-// //Add family form
-//     $('#add-family-member').click(function () {
-//         var name = $('.mt-repeater-item .mt-repeater-input input').first().val();
-//         var date = $('.mt-repeater-item .mt-repeater-input input[type="date"]').first().val();
-//         var relation = $('.mt-repeater-item .mt-repeater-input select').first().val();
-//         if (relation != '? undefined:undefined ?' && name != '' && date != '') {
-//             $('.mt-repeater').last().append($('.mt-repeater-item').first().clone());
-//         }
-//     });
-//
-// //Delete family form
-//     $(document).on("click", '.mt-repeater-delete', function () {
-//
-//         var elem = $(this).parent().parent();
-//         var length = $('.mt-repeater-item').length;
-//         if (length != 1) {
-//             elem.remove();
-//         }
-//     });
 
 //Image Tab
 //Change Image Preview
@@ -114,20 +95,7 @@ $(document).ready(function () {
         $('#family-sub-tab').parent().addClass('active');
     });
 
-    function html2pdf() {
-        var dom = document.getElementById('portlet_comments_3'),
-            canvas = document.getElementById('#canvas');
-        html2canvas(dom, {
-            canvas: canvas, // dom -> canvas
-            onrendered: function (canvas) { // canvas -> image
-                // var dataURL = canvas.toDataURL();
-                // // document.getElementById(imgID).src = dataURL;
-                demoFromHTML('Test');
-            }
-        });
-    }
-
-
+    //Export PDF
     $('#export-pdf').click(function () {
         demoFromHTML();
     });
